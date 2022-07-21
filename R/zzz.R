@@ -1,4 +1,7 @@
 .onAttach <- function(lib, pkg) {
+    ## ANSII art created with:
+    ## figlet noacsR
+    
     if (interactive()) 
         packageStartupMessage(paste0(
 "                           ____  
