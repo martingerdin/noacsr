@@ -1,4 +1,4 @@
-pretty_stop <- function(...) stop (prettify_text(...), call. = FALSE)
+pretty_stop <- function(...) stop (prettify_text(emoji::emoji("stop_sign"), " ", ...), call. = FALSE)
 
 pretty_message <- function(...) message (prettify_text(...))
 
