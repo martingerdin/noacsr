@@ -29,8 +29,8 @@ create <- function(name) {
     dir.create("documents")
     dir.create("results")
     step_completed("Created default folders")
-    message(paste0(emoji::emoji("fireworks"), " All done!"))
+    pretty_message(emoji = "fireworks", " All done!")
     file.edit("manuscript.Rmd")
 }
 
-step_completed <- function(...) message(paste0(emoji::emoji("check_mark_button"), " ", ...))
+step_completed <- function(...) pretty_message(emoji = "check_mark_button", ...)
