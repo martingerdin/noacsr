@@ -2,9 +2,9 @@
 #' Get the XLSForm/Codebook for a kobo project. 
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select
-#' @importFrom httr GET
-#' @importFrom readxl read_xlsx
-#' @importFrom purrr map
+#' @importFrom httr GET authenticate
+#' @importFrom readxl read_xlsx excel_sheets
+#' @importFrom purrr map set_names
 #' @param url URL to kobotoolbox, for example https://kf.kobo.prod.in.noacs.io
 #' @param uid The uid for with the project, get it from kobo_get_project_list function
 #' @param username Username for kobotoolbox
