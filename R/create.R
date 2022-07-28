@@ -3,15 +3,19 @@
 #' This functions creates a NOACS project by providing a structure to
 #' your documents and code.
 #' @param name Character. The name of your project. No default.
+#' @param setup.database.access Logical. If TRUE some additional steps
+#'     are added to the create project process where the user is asked
+#'     to setup database access.
 #' @export
-create <- function(name) {
+create <- function(name, setup.database.access = FALSE) {
     assertthat::assert_that(is.character(name) & length(name) == 1)
+    assertthat::assert_that(is.logical(setup.database.access) & length(setup.database.access == 1))
     if (dir.exists(name))
         pretty_stop("Sorry, can't do that becasue a directory named ", name, " already exists.")
     files.in.wd <- list.files()
     if (any(sapply(c("manuscript.Rmd", "main.R", ".Rproj"), grepl, x = files.in.wd, fixed = TRUE)))
-        pretty_stop("Sorry, can't do that because you seem to be in a project directory already.")
-    message("Creating project directory, hang on...")
+        pretty_stop("Sorry, can't do that because you seem to be in a project directory already. This happens if you have a file called manuscript.Rmd, main.R, or .Rproj in your working directory.")
+    pretty_message("Creating project directory, hang on...")
     dir.create(name)
     step_completed("Created project directory ", name)
     setwd(name)
@@ -29,6 +33,10 @@ create <- function(name) {
     dir.create("documents")
     dir.create("results")
     step_completed("Created default folders")
+    if (setup.database.access) {
+        pretty_message("Setting up database access...")
+        setup_database_access()
+    }
     pretty_message(emoji = "fireworks", " All done!")
     file.edit("manuscript.Rmd")
 }
