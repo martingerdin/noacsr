@@ -12,15 +12,15 @@
 #' @return data A list with a tibble for each sheet in the XLSForm.
 #' @export
 kobo_get_project_codebook <- function(url, uid, username, password) {
-  response <- httr::GET(paste0(url, "/api/v2/assets/", uid, "/deployment/?format=xls"), authenticate(username, password))
+  response <- httr::GET(paste0(url, "/api/v2/assets/", uid, "/deployment/?format=xls"), httr::authenticate(username, password))
   raw_xlsx <- response$content
   filename <- tempfile(fileext = ".xlsx")
   writeBin(raw_xlsx, filename)
   readxl::read_xlsx(filename)
   codebook <- filename %>% 
     readxl::excel_sheets() %>% 
-    set_names() %>% 
-    purrr::map(read_excel, path = filename)
+    purrr::set_names() %>% 
+    purrr::map(readxl::read_excel, path = filename)
   unlink(filename)
   return(codebook)
 }
