@@ -4,10 +4,18 @@
 \alias{create}
 \title{Create a NOACS project}
 \usage{
-create(name)
+create(name, open.manuscript = TRUE, setup.database.access = FALSE)
 }
 \arguments{
 \item{name}{Character. The name of your project. No default.}
+
+\item{open.manuscript}{Logical. If TRUE the file manuscript.Rmd
+created by this function is opened in your current
+editor. Defaults to TRUE.}
+
+\item{setup.database.access}{Logical. If TRUE some additional steps
+are added to the create project process where the user is asked
+to setup database access.}
 }
 \description{
 This functions creates a NOACS project by providing a structure to
