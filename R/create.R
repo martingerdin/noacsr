@@ -3,15 +3,19 @@
 #' This functions creates a NOACS project by providing a structure to
 #' your documents and code.
 #' @param name Character. The name of your project. No default.
+#' @param open.manuscript Logical. If TRUE the file manuscript.Rmd
+#'     created by this function is opened in your current
+#'     editor. Defaults to TRUE.
 #' @param setup.database.access Logical. If TRUE some additional steps
 #'     are added to the create project process where the user is asked
 #'     to setup database access.
 #' @export
-create <- function(name, setup.database.access = FALSE) {
+create <- function(name, open.manuscript = TRUE, setup.database.access = FALSE) {
     assertthat::assert_that(is.character(name) & length(name) == 1)
-    assertthat::assert_that(is.logical(setup.database.access) & length(setup.database.access == 1))
     if (dir.exists(name))
         pretty_stop("Sorry, can't do that becasue a directory named ", name, " already exists.")
+    for (argument in c(open.manuscript, setup.database.access))
+        assertthat::assert_that(is.logical(argument) & length(argument == 1))
     files.in.wd <- list.files()
     if (any(sapply(c("manuscript.Rmd", "main.R", ".Rproj"), grepl, x = files.in.wd, fixed = TRUE)))
         pretty_stop("Sorry, can't do that because you seem to be in a project directory already. This happens if you have a file called manuscript.Rmd, main.R, or .Rproj in your working directory.")
@@ -38,7 +42,8 @@ create <- function(name, setup.database.access = FALSE) {
         setup_database_access()
     }
     pretty_message(emoji = "fireworks", " All done!")
-    file.edit("manuscript.Rmd")
+    if (open.manuscript)
+        file.edit("manuscript.Rmd")
 }
 
 step_completed <- function(...) pretty_message(emoji = "check_mark_button", ...)
