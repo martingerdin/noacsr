@@ -1,0 +1,30 @@
+---
+title: "Introduction to noacsR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(noacsr)
+```
+
+# First Thing First
+What is NOACS? NOACS is a virtual research lab that conducts medical research on the prediction and prevention of poor patient outcomes. NOACS is short for No Accidents, referring to the quote by Master Oogway "There are no accidents" in the movie Kung Fu Panda. By virtual we mean that there is no physical building that hosts NOACS. Instead, NOACS 
+
+# Why?
+
+
+
+# What? 
+
+# For Whom?
