@@ -1,9 +1,11 @@
 Package: noacsr
 Title: NOACS Research Lab Utility Functions
-Version: 0.0.0.9000
+Version: 0.0.1.0000
 Authors@R: 
-    person("Martin", "Gerdin Wärnberg", , "martingerdin@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0001-6069-4794"))
+    c(person("Martin", "Gerdin Wärnberg", , "martingerdin@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-6069-4794")),
+    person("Johanna", "Berg", , "johanna.berg@ki.se", role = c("aut"),
+           comment = c(ORCID = "0000-0001-7553-7337")))
 Description: NOACS - the No Accidents research lab conducts medical research on the prediction and prevention of poor patient outcomes. This package is a collection of utility functions for streamlining our research work and facilitate onboarding of new members and collaborators.
 License: `use_gpl3_license()`
 Encoding: UTF-8
@@ -12,4 +14,10 @@ RoxygenNote: 7.1.1
 Imports: 
     assertthat,
     emoji,
-    git2r
+    git2r,
+    dplyr,
+    httr,
+    jsonlite,
+    magrittr,
+    readxl,
+    purrr
