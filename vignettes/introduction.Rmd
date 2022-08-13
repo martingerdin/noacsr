@@ -18,13 +18,63 @@ knitr::opts_chunk$set(
 library(noacsr)
 ```
 
-# First Thing First
-What is NOACS? NOACS is a virtual research lab that conducts medical research on the prediction and prevention of poor patient outcomes. NOACS is short for No Accidents, referring to the quote by Master Oogway "There are no accidents" in the movie Kung Fu Panda. By virtual we mean that there is no physical building that hosts NOACS. Instead, NOACS 
+*NOACS is a virtual research lab that conducts medical research on the prediction and prevention of poor patient outcomes. NOACS is short for No Accidents, referring to the quote by Master Oogway "There are no accidents" in the movie Kung Fu Panda. By virtual we mean that there is no physical building that hosts NOACS. Instead, the primary location for all things NOACS is online.*
 
 # Why?
-
-
+`noacsR` is an attempt to help standardise and streamline project workflows, facilitate onboarding of new members, and reduce code duplication. The primary use case of `noacsR` is to provide utility functions as building blocks when we as the core NOACS members construct other, project specific, packages. We realised that most of our projects need the same components and that we were reinventing the wheel over and over again. 
 
 # What? 
+The R in `noacsR` refers to the programming language R, which is the primary language of choice for our projects. noacsR is a R package, meaning that it is a collection of R functions that can be used to reimplement certain behaviours across projects. 
+
+Most of the heavy lifting when producing study specific code should in the general case not be `noacsR` directly, but project specific packages that reimplements `noacsR` functions and add special sauce to cover common edge cases. In R terms, `noacsR` should be a dependency of our project specific packages.
+
+For example, the project specific package `rofi` is for the "Opportunities for improvement" project that uses data from the Swedish trauma registry. This package reimplements [noacsr::mariadb_get_project_data()] in its [rofi::import_data()] function to import data from a MariaDB instance. 
+
+Other projects may require data from other providers, or public repositories such as GitHub, and should instead use those functions. This means that `noacsR` is intended to include generic functions that can be used to achieve project specific behaviours. 
+
+A good hint that a function should live in a project specific package rather than `noacsR` is when it includes hard coded variable or table names, as these are unlikely to be helpful across projects. Instead, one may as the author of that function, rewrite it as a generic function and then implement it with certain defaults in a specific project. 
+
+For example, most of our projects will need a function that produces a summary table, a table of sample characteristics. The generic function can live in `noacsR` and then it can be reimplemented in project specific packages and given defaults with hard coded variable names that make sense in the specific project context. 
 
 # For Whom?
+`noacsR` is for all NOACS members, old and new, as well as other members of the research and R communities that want to use our work to write project specific packages. If you're looking to produce code for a study you'll probably better off using a project specific package, such as `rofi`.
+
+# How?
+Get started by installing `noacsR` in the R console:
+
+```{r}
+## You need the package devtools to do this, so you may have to do
+## install.packages("devtools") first
+devtools::install_github("martingerdin/noacsr")
+library(noacsr)
+```
+
+Once `noacsR` is installed you start create project specific functions by wrapping and adding to existing `noacsR` functions. A simple example is the [rofi::create()] function, that obviously wraps [noacsr::create()]. It looks like this:
+
+```{r}
+#' Create and Scaffold an Opportunities for Improvement Project
+#' 
+#' Run this function to initiate an opportunities for improvement project and 
+#' scaffold an appropriate folder structure. 
+#' @param name Character. The name of the project. No default. 
+#' @param description Character. A short, one sentence, description of the 
+#' project. This is added to the DESCRIPTION file. No default. 
+create <- function(name, description) {
+  ## Check arguments
+  for (argument in list(name, description)) 
+    assertthat::assert_that(is.character(argument) & length(argument) == 1)
+  ## Use devtools::create to initiate a R package folder structure
+  usethis::create_package(name)
+  
+}
+```
+
+<!--
+create a new project using [noacsr::create()]. This will create a standard directory structure, to make sure that projects are structured the same way, making it easy for you and team members to navigate your project. The standard directory structure will also make it easier for you to navigate other NOACS projects.
+
+So, let's say our project is about predicting ICU mortality in trauma patients. We may call this project "Predicting ICU mortality in trauma patients", or just "Predicting ICU trauma mortality". Create your first project like this:
+
+```{r}
+create("Predicting ICU trauma mortality")
+```
+-->
