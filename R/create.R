@@ -3,6 +3,11 @@
 #' This functions creates a NOACS project by providing a structure to
 #' your documents and code.
 #' @param name Character. The name of your project. No default.
+#' @param existing.project Logical. If TRUE it will check if a
+#'     directory named `name` exists in the current working directory
+#'     or if your current working directory is `name`, and if so
+#'     create the project in that directory. If FALSE it will abort if
+#'     a directory called `name` already exists. Defaults to TRUE.
 #' @param open.manuscript Logical. If TRUE the file manuscript.Rmd
 #'     created by this function is opened in your current
 #'     editor. Defaults to TRUE.
@@ -10,18 +15,23 @@
 #'     are added to the create project process where the user is asked
 #'     to setup database access.
 #' @export
-create <- function(name, open.manuscript = TRUE, setup.database.access = FALSE) {
+create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.database.access = FALSE) {
     assertthat::assert_that(is.character(name) & length(name) == 1)
-    if (dir.exists(name))
-        pretty_stop("Sorry, can't do that becasue a directory named ", name, " already exists.")
-    for (argument in c(open.manuscript, setup.database.access))
+    for (argument in c(existing.project, open.manuscript, setup.database.access))
         assertthat::assert_that(is.logical(argument) & length(argument == 1))
+    if (!existing.project & dir.exists(name))
+        pretty_stop("Sorry, can't do that becasue a directory named ", name, " already exists.")
+    if (existing.directory & !dir.exists(name) & !grepl(paste0(name, "$"), getwd()))
+        pretty_stop("Sorry, can't find a project directory called ", name, ".")
+    ## Continue to implement check for current working direcotry and switching directories
     files.in.wd <- list.files()
-    if (any(sapply(c("manuscript.Rmd", "main.R", ".Rproj"), grepl, x = files.in.wd, fixed = TRUE)))
-        pretty_stop("Sorry, can't do that because you seem to be in a project directory already. This happens if you have a file called manuscript.Rmd, main.R, or .Rproj in your working directory.")
-    pretty_message("Creating project directory, hang on...")
-    dir.create(name)
-    step_completed("Created project directory ", name)
+    if (any(sapply(c("manuscript.Rmd", "main.R"), grepl, x = files.in.wd, fixed = TRUE)))
+        pretty_stop("Sorry, can't do that because you seem to be in a project directory already. This happens if you have a file called manuscript.Rmd, or main.R in your working directory.")
+    if (!existing.project) {
+        pretty_message("Creating project directory, hang on...")
+        dir.create(name)
+        step_completed("Created project directory ", name)
+    }
     setwd(name)
     step_completed("Changed working directory to ", name, "/")
     git2r::init()
