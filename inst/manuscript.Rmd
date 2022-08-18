@@ -3,6 +3,7 @@ title: "Manuscript title here"
 output: html_document
 author: "Your name here"
 bibliography: bibliography.bib
+csl: vancouver.csl
 ---
 
 ```{r setup, include=FALSE}
@@ -253,3 +254,5 @@ Conclusion
 
 References
 ==========
+
+<!-- Do not edit by hand, references will be inserted and formatted automatically once you knit this document -->

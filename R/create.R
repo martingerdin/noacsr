@@ -49,6 +49,8 @@ create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.
     step_completed("Created manuscript.Rmd file")
     file.copy(system.file("bibliography.bib", package = "noacsr"), "bibliography.bib")
     step_completed("Created bibliography.bib file")
+    file.copy(system.file("vancouver.csl", package = "noacsr"), "vancouver.csl")
+    step_completed("Created vancouver.csl file")
     file.copy(system.file("main.R", package = "noacsr"), "main.R")
     step_completed("Created main.R file")
     if (!file.exists(paste0(name, ".Rproj")))
