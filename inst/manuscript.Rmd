@@ -250,3 +250,6 @@ Conclusion
 ==========
 
 <!-- Give a short conclusion, corresponding to the aim -->
+
+References
+==========
