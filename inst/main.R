@@ -21,6 +21,6 @@
 noacsr::source_all_functions()
 
 ## Import data
-data <- rofi::import_data()
+data <- import_data(test = TRUE)
 
 ## Whatever you do next, maybe clean data?
