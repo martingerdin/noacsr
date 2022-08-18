@@ -4,10 +4,21 @@
 \alias{create}
 \title{Create a NOACS project}
 \usage{
-create(name, open.manuscript = TRUE, setup.database.access = FALSE)
+create(
+  name,
+  existing.project = TRUE,
+  open.manuscript = TRUE,
+  setup.database.access = FALSE
+)
 }
 \arguments{
 \item{name}{Character. The name of your project. No default.}
+
+\item{existing.project}{Logical. If TRUE it will check if a
+directory named \code{name} exists in the current working directory
+or if your current working directory is \code{name}, and if so
+create the project in that directory. If FALSE it will abort if
+a directory called \code{name} already exists. Defaults to TRUE.}
 
 \item{open.manuscript}{Logical. If TRUE the file manuscript.Rmd
 created by this function is opened in your current
