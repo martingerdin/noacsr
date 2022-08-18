@@ -19,23 +19,32 @@ create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.
     assertthat::assert_that(is.character(name) & length(name) == 1)
     for (argument in c(existing.project, open.manuscript, setup.database.access))
         assertthat::assert_that(is.logical(argument) & length(argument == 1))
-    if (!existing.project & dir.exists(name))
+    ## Check if the project directory is in the current working
+    ## directory and if it is, stop if existing.project is false
+    project.dir.is.in.wd <- dir.exists(name)
+    if (!existing.project & project.dir.is.in.wd)
         pretty_stop("Sorry, can't do that becasue a directory named ", name, " already exists.")
-    if (existing.directory & !dir.exists(name) & !grepl(paste0(name, "$"), getwd()))
+    ## Check if the current working directory is the project directory
+    ## and if it is not, stop if existing directory is true
+    project.dir.is.wd <- grepl(paste0(name, "$"), getwd())
+    if (existing.project & !project.dir.is.in.wd & !project.dir.is.wd)
         pretty_stop("Sorry, can't find a project directory called ", name, ".")
-    ## Continue to implement check for current working direcotry and switching directories
-    files.in.wd <- list.files()
-    if (any(sapply(c("manuscript.Rmd", "main.R"), grepl, x = files.in.wd, fixed = TRUE)))
-        pretty_stop("Sorry, can't do that because you seem to be in a project directory already. This happens if you have a file called manuscript.Rmd, or main.R in your working directory.")
+    ## Check files in the current working directory and stop if it is
+    ## already a noacs project
+    files.in.wd <- list.files(all.files = TRUE)
+    files.to.check <- c("manuscript.Rmd", "main.R", "bibliography.bib")
+    if (any(sapply(files.to.check, grepl, x = files.in.wd, fixed = TRUE)))
+        pretty_stop("Sorry, can't do that because you seem to be in a project directory already. This happens if you have any of the files ", paste0(files.to.check, collapse = ", "), " in your working directory.")
     if (!existing.project) {
         pretty_message("Creating project directory, hang on...")
         dir.create(name)
         step_completed("Created project directory ", name)
     }
-    setwd(name)
-    step_completed("Changed working directory to ", name, "/")
-    git2r::init()
-    step_completed("Initiated version control in ", name, "/")
+    if (!project.dir.is.wd) {
+        setwd(name)
+        step_completed("Changed working directory to ", name, "/")
+    }
+    check_version_control()
     file.copy(system.file("manuscript.Rmd", package = "noacsr"), "manuscript.Rmd")
     step_completed("Created manuscript.Rmd file")
     file.copy(system.file("main.R", package = "noacsr"), "main.R")
@@ -57,3 +66,14 @@ create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.
 }
 
 step_completed <- function(...) pretty_message(emoji = "check_mark_button", ...)
+
+## Wrapping this in a function to make it easier to test
+check_version_control <- function() {
+    already.git <- dir.exists(".git")
+    if (already.git) {
+        step_completed("The project directory is already under version control, skipping that.")
+    } else {
+        git2r::init()
+        step_completed("Initiated version control in ", name, "/")
+    }
+}
