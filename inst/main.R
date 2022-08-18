@@ -18,9 +18,9 @@
 ## them). They all need to be sourced however when you compile your
 ## manuscript file or run this file as a job, as that happens in a
 ## clean R session.
-source_all_functions()
+noacsr::source_all_functions()
 
 ## Import data
-data <- import_data()
+data <- rofi::import_data()
 
 ## Whatever you do next, maybe clean data?
