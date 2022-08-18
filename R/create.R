@@ -56,6 +56,7 @@ create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.
     file.copy(system.file(".gitignore.default", package = "noacsr"), ".gitignore")
     step_completed("Created default config files")
     dir.create("functions")
+    file.copy(system.file("example_function.R", package = "noacsr"), "functions/example_function.R")
     dir.create("documents")
     dir.create("results")
     step_completed("Created default folders")
