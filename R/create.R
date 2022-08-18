@@ -44,7 +44,7 @@ create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.
         setwd(name)
         step_completed("Changed working directory to ", name, "/")
     }
-    check_version_control()
+    check_version_control(name)
     file.copy(system.file("manuscript.Rmd", package = "noacsr"), "manuscript.Rmd")
     step_completed("Created manuscript.Rmd file")
     file.copy(system.file("bibliography.bib", package = "noacsr"), "bibliography.bib")
@@ -71,7 +71,7 @@ create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.
 step_completed <- function(...) pretty_message(emoji = "check_mark_button", ...)
 
 ## Wrapping this in a function to make it easier to test
-check_version_control <- function() {
+check_version_control <- function(name) {
     already.git <- dir.exists(".git")
     if (already.git) {
         step_completed("The project directory is already under version control, skipping that.")
