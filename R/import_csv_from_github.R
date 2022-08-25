@@ -1,7 +1,7 @@
 #' This function imports csv files from GitHub, it will rewrite the GitHub-base URL to the raw format.
 #' @importFrom magrittr %>%
 #' @importFrom stringr str_replace
-#' @importFrom readr read_csv
+#' @importFrom readr read_csv read_csv2
 #' @param ghurl URL to github csv file, for example https://github.com/titco/titco-I/blob/master/codebook-titco-I-v1.csv
 #' @param delim The deliminator used in the csv file, either "," or ";"- Defaults to ","
 #' @return data A tibble with the data from the csv file.
