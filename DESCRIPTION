@@ -21,7 +21,9 @@ Imports:
     jsonlite,
     magrittr,
     readxl,
-    purrr
+    purrr,
+    readr,
+    stringr
 Suggests: 
     rmarkdown,
     knitr,
