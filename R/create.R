@@ -55,7 +55,7 @@ create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.
     step_completed("Created main.R file")
     if (!file.exists(paste0(name, ".Rproj")))
         file.copy(system.file("default.Rproj", package = "noacsr"), paste0(name, ".Rproj"))
-    file.copy(system.file(".gitignore.default", package = "noacsr"), ".gitignore")
+    file.copy(system.file(".gitignore.default", package = "noacsr"), ".gitignore", overwrite = TRUE)
     step_completed("Created default config files")
     dir.create("functions")
     file.copy(system.file("example_function.R", package = "noacsr"), "functions/example_function.R")
