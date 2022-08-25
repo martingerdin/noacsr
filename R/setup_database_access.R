@@ -22,7 +22,7 @@ setup_database_access <- function(silent = FALSE) {
     if (!is.empty(password) & !silent) {
         pretty_message(emoji = "red_exclamation_mark", "A database passwoard already exists. Please edit the .env file directly if you want to change it.")
     } else {
-        password <- request_confidential("Please enter your password for database access:")
+        password <- request_confidential("Please enter your password for accessing the database:")
         write(paste0("DB_PASSWORD=", password), ".env", append = TRUE)
     } 
 }
