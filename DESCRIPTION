@@ -23,7 +23,8 @@ Imports:
     readxl,
     purrr,
     readr,
-    stringr
+    stringr,
+    snakecase
 Suggests: 
     rmarkdown,
     knitr,
