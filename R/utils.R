@@ -17,7 +17,7 @@ request_information <- function(...) pretty_message(emoji = "white_exclamation_m
 
 request_confidential <- function(...) askpass::askpass(prompt = paste0(...))
 
-
+step_completed <- function(...) pretty_message(emoji = "check_mark_button", ...)
 
 
     

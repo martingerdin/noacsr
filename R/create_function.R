@@ -9,6 +9,8 @@
 #' @export
 create_function <- function(title) {
     assertthat::assert_that(is.character(title) & length(title) == 1)
+    assertthat::assert_that(dir.exists("functions"),
+                            msg = "There is no directory named functions in which to create this function.")
     roxygen.title <- tools::toTitleCase(title)
     function.name <- snakecase::to_snake_case(title)
     boilerplate <- paste0("#' ", roxygen.title, "\n",
@@ -21,6 +23,9 @@ create_function <- function(title) {
                           "    y <- x + 1\n",
                           "    return (y)\n",
                           "}")
-    write(boilerplate, paste0("functions/", function.name, ".R"))
+    function.file.name <- paste0("functions/", function.name, ".R")
+    write(boilerplate, function.file.name)
+    step_completed("Created function ", function.name, " in ", function.file.name, ".")
+    file.edit(function.file.name)
 }
 

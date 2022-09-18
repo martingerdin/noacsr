@@ -71,8 +71,6 @@ create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.
         file.edit("manuscript.Rmd")
 }
 
-step_completed <- function(...) pretty_message(emoji = "check_mark_button", ...)
-
 ## Wrapping this in a function to make it easier to test
 check_version_control <- function(name) {
     already.git <- dir.exists(".git")
