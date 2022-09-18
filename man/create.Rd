@@ -7,8 +7,9 @@
 create(
   name,
   existing.project = TRUE,
-  open.manuscript = TRUE,
-  setup.database.access = FALSE
+  open.manuscript = rlang::is_interactive(),
+  setup.database.access = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -27,6 +28,9 @@ editor. Defaults to TRUE.}
 \item{setup.database.access}{Logical. If TRUE some additional steps
 are added to the create project process where the user is asked
 to setup database access.}
+
+\item{verbose}{Logical. If TRUE the function reports back when
+important steps have been completed. Defaults to TRUE.}
 }
 \description{
 This functions creates a NOACS project by providing a structure to

@@ -4,12 +4,19 @@
 \alias{create_function}
 \title{Create Function}
 \usage{
-create_function(title)
+create_function(title, verbose = TRUE, open = rlang::is_interactive())
 }
 \arguments{
 \item{title}{Character. What the function does, for example
 "Create function" of "Create sample characteristics table". No
 default.}
+
+\item{verbose}{Logical. If TRUE the function reports back when
+important steps have been completed. Defaults to TRUE.}
+
+\item{open}{Logical. If TRUE the newly created function file will
+be opened in your editor. Defaults to TRUE if you run R in
+interactive mode.}
 }
 \description{
 Creates a file in the directory \verb{/functions} with some function
