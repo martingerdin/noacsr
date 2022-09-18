@@ -14,11 +14,18 @@
 #' @param setup.database.access Logical. If TRUE some additional steps
 #'     are added to the create project process where the user is asked
 #'     to setup database access.
+#' @param verbose Logical. If TRUE the function reports back when
+#'     important steps have been completed. Defaults to TRUE.
 #' @export
-create <- function(name, existing.project = TRUE, open.manuscript = TRUE, setup.database.access = FALSE) {
+create <- function(name,
+                   existing.project = TRUE,
+                   open.manuscript = rlang::is_interactive(),
+                   setup.database.access = FALSE,
+                   verbose = TRUE) {
     assertthat::assert_that(is.character(name) & length(name) == 1)
     for (argument in c(existing.project, open.manuscript, setup.database.access))
         assertthat::assert_that(is.logical(argument) & length(argument == 1))
+    withr::local_options(list(verbose = verbose))
     ## Check if the project directory is in the current working
     ## directory and if it is, stop if existing.project is false
     project.dir.is.in.wd <- dir.exists(name)

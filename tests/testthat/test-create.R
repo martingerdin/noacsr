@@ -1,8 +1,13 @@
 (function() {
     ## I wrap these tests in an anonumous function to allow objects to
     ## be reused across tests without polluting the global namespace
+    clean_up <- function(temp.file) {
+        setwd("..")
+        unlink(temp.file, recursive = TRUE)
+    }
     starting.working.directory <- getwd()
     temp.file <- sub("./", "", tempfile(pattern = "project", tmpdir = "."), fixed = TRUE)
+    withr::defer(clean_up(temp.file))
     create(temp.file, existing.project = FALSE, open.manuscript = FALSE)
 
     ## Run tests when creating a new project directory 
@@ -22,16 +27,14 @@
     })
 
     ## Clean up
-    setwd("..")
-    unlink(temp.file, recursive = TRUE)
+    clean_up(temp.file)
 
     ## Run test when using an existing project directory
     test_that("create changes working directory correctly when project dir is in the working directory", {
         dir.create(temp.file)
         create(temp.file, open.manuscript = FALSE)
         expect_true(getwd() == paste0(starting.working.directory, "/", temp.file))
-        setwd("..")
-        unlink(temp.file, recursive = TRUE)
+        clean_up(temp.file)
     })
     
     test_that("create does not change working directory when the current working directory is the project directory", {
@@ -39,8 +42,7 @@
         setwd(temp.file)
         create(temp.file, open.manuscript = FALSE)
         expect_true(getwd() == paste0(starting.working.directory, "/", temp.file))
-        setwd("..")
-        unlink(temp.file, recursive = TRUE)
+        clean_up(temp.file)
     })
 
     test_that("create does not initiate version control if it's already there", {
@@ -48,7 +50,6 @@
         setwd(temp.file)
         git2r::init()
         expect_message(check_version_control(), "directory is already under version control")
-        setwd("..")
-        unlink(temp.file, recursive = TRUE)
+        clean_up(temp.file)
     })
 })()
