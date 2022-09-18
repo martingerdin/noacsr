@@ -1,0 +1,10 @@
+test_that("create_functions writes a file to disk", {
+    temp.dir <- tempfile(tmpdir = ".")
+    dir.create(temp.dir)
+    setwd(temp.dir)
+    dir.create("functions")
+    create_function("Add data", verbose = FALSE, open = FALSE)
+    expect_true(file.exists("functions/add_data.R"))
+    setwd("..")
+    unlink(temp.dir, recursive = TRUE, force = TRUE)
+})
