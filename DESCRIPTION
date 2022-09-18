@@ -24,7 +24,8 @@ Imports:
     purrr,
     readr,
     stringr,
-    snakecase
+    snakecase,
+    withr
 Suggests: 
     rmarkdown,
     knitr,
