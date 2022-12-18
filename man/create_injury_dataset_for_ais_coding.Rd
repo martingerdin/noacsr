@@ -10,7 +10,8 @@ create_injury_dataset_for_ais_coding(
   other.columns = NULL,
   only.unique = TRUE,
   remove.coded = TRUE,
-  save.dataset = FALSE
+  save.dataset = FALSE,
+  file = "injury-dataset-for-ais-coding"
 )
 }
 \arguments{
@@ -32,6 +33,10 @@ coded are removed from the dataset. Defaults to TRUE.}
 \item{save.dataset}{Logical. If TRUE the created dataset is saved
 to disk as a .csv file and returned invisibly. Defaults to
 FALSE.}
+
+\item{file}{Character. The path of the file containing the injury
+dataset to code. Only used if save.dataset = TRUE and defaults
+to "injury-dataset-for-ais-coding".}
 }
 \description{
 Takes a dataset that contains injury data as input and creates a

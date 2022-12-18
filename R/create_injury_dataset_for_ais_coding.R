@@ -15,12 +15,16 @@
 #' @param save.dataset Logical. If TRUE the created dataset is saved
 #'     to disk as a .csv file and returned invisibly. Defaults to
 #'     FALSE.
+#' @param file Character. The path of the file containing the injury
+#'     dataset to code. Only used if save.dataset = TRUE and defaults
+#'     to "injury-dataset-for-ais-coding".
 #' @export
 create_injury_dataset_for_ais_coding <- function(data, injury.columns, 
                                                  other.columns = NULL,
                                                  only.unique = TRUE,
                                                  remove.coded = TRUE,
-                                                 save.dataset = FALSE) {
+                                                 save.dataset = FALSE,
+                                                 file = "injury-dataset-for-ais-coding") {
     ## Check arguments
     assert_that(is.data.frame(data))
     assert_that(is.character(injury.columns))
@@ -41,6 +45,14 @@ create_injury_dataset_for_ais_coding <- function(data, injury.columns,
     injury.data$external <- NA
 
     ## Remove already coded injuries
-    
-    return (injury.dataset.for.ais.coding)
+    if (remove.coded)
+        injury.data <- injury.data[!(injury.data$injury_description %in% coded.injury.data$injury_description), ]
+
+    ## Save and return dataset
+    if (save.dataset) {
+        readr::write_csv(injury.data, paste0(file, ".csv"), na = "")
+        return (invisible(injury.data))
+    } else {
+        return (injury.data)
+    }
 }
