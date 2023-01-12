@@ -5,10 +5,10 @@ pretty_message <- function(...) message (prettify_text(...))
 pretty_warning <- function(...) warning (prettify_text(...))
 
 prettify_text <- function(..., emoji = NULL) {
-    strwrap(paste0(ifelse(is.null(emoji), "", emoji::emoji(emoji)),
+    paste0(strwrap(paste0(ifelse(is.null(emoji), "", emoji::emoji(emoji)),
                    ifelse(is.null(emoji), "", " "),
-                   ...),
-            prefix = "\n", initial = "")   
+                   ..., collapse = ""),
+            prefix = "\n", initial = ""), collapse = "")
 }
 
 ask_question <- function(...) pretty_message(emoji = "white_question_mark", ...)
