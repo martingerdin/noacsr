@@ -8,7 +8,7 @@
 #'     or if your current working directory is `name`, and if so
 #'     create the project in that directory. If FALSE it will abort if
 #'     a directory called `name` already exists. Defaults to TRUE.
-#' @param open.manuscript Logical. If TRUE the file manuscript.Rmd
+#' @param open.readme Logical. If TRUE the file README.md
 #'     created by this function is opened in your current
 #'     editor. Defaults to TRUE.
 #' @param setup.database.access Logical. If TRUE some additional steps
@@ -19,11 +19,11 @@
 #' @export
 create <- function(name,
                    existing.project = TRUE,
-                   open.manuscript = rlang::is_interactive(),
+                   open.readme = rlang::is_interactive(),
                    setup.database.access = FALSE,
                    verbose = TRUE) {
     assertthat::assert_that(is.character(name) & length(name) == 1)
-    for (argument in c(existing.project, open.manuscript, setup.database.access))
+    for (argument in c(existing.project, open.readme, setup.database.access))
         assertthat::assert_that(is.logical(argument) & length(argument == 1))
     withr::local_options(list(verbose = verbose))
     ## Check if the project directory is in the current working
@@ -39,7 +39,7 @@ create <- function(name,
     ## Check files in the current working directory and stop if it is
     ## already a noacs project
     files.in.wd <- list.files(all.files = TRUE)
-    files.to.check <- c("manuscript.Rmd", "main.R", "bibliography.bib")
+    files.to.check <- c("manuscript.Rmd", "main.R", "bibliography.bib", "README.md", "lab-book.Rmd")
     if (any(sapply(files.to.check, grepl, x = files.in.wd, fixed = TRUE)))
         pretty_stop("Sorry, can't do that because you seem to be in a project directory already. This happens if you have any of the files ", paste0(files.to.check, collapse = ", "), " in your working directory.")
     if (!existing.project) {
@@ -52,14 +52,18 @@ create <- function(name,
         step_completed("Changed working directory to ", name, "/")
     }
     check_version_control(name)
+    file.copy(system.file("README.md", package = "noacsr"), "README.md")
+    step_completed("Created README.md")
+    file.copy(system.file("lab-book.Rmd", package = "noacsr"), "lab-book.Rmd")
+    step_completed("Created lab-book.Rmd")
     file.copy(system.file("manuscript.Rmd", package = "noacsr"), "manuscript.Rmd")
-    step_completed("Created manuscript.Rmd file")
+    step_completed("Created manuscript.Rmd")
     file.copy(system.file("bibliography.bib", package = "noacsr"), "bibliography.bib")
-    step_completed("Created bibliography.bib file")
+    step_completed("Created bibliography.bib")
     file.copy(system.file("vancouver.csl", package = "noacsr"), "vancouver.csl")
-    step_completed("Created vancouver.csl file")
+    step_completed("Created vancouver.csl")
     file.copy(system.file("main.R", package = "noacsr"), "main.R")
-    step_completed("Created main.R file")
+    step_completed("Created main.R")
     if (!file.exists(paste0(name, ".Rproj")))
         file.copy(system.file("default.Rproj", package = "noacsr"), paste0(name, ".Rproj"))
     file.copy(system.file(".gitignore.default", package = "noacsr"), ".gitignore", overwrite = TRUE)
@@ -74,8 +78,8 @@ create <- function(name,
         setup_database_access()
     }
     pretty_message(emoji = "fireworks", " All done!")
-    if (open.manuscript)
-        file.edit("manuscript.Rmd")
+    if (open.readme)
+        file.edit("README.md")
 }
 
 ## Wrapping this in a function to make it easier to test
